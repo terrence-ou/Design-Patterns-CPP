@@ -1,7 +1,6 @@
 /*
 1 - Single Responsibility Principle
 */
-
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -9,36 +8,59 @@
 
 using std::endl;
 using std::ofstream;
+using std::replace;
 using std::string;
 using std::to_string;
 using std::vector;
 
-struct Journal {
+/* Poem struct only responsible to control the content of a poem*/
+
+struct Poem {
   string title{};
   vector<string> entries{};
-  explicit Journal(const string &title_str) : title{title_str} {};
-  void add(const string &entry);
-  // save is not Journal's responsibility
+  int count{0};
+  explicit Poem(const string &new_title) : title{new_title} {};
+
+  // "add" method is Poem's Responsibility
+  void add(const string &sentence);
+  // but "save" method is a separate concern
   void save(const string &filename);
 };
 
-void Journal::add(const string &entry) {
-  static int count = 1;
-  entries.push_back(to_string(count++) + ": " + entry);
+// defining Poem's add method
+void Poem::add(const string &sentence) {
+  entries.push_back(to_string(count++) + ": " + sentence);
 }
 
-void Journal::save(const string &filename) {
+// defining Poem's save method
+void Poem::save(const string &filename) {
   ofstream ofs{filename};
-  for (auto &s : entries) {
-    ofs << s << endl;
+  for (string entry : entries) {
+    ofs << entry << endl;
   }
 }
 
-int main() {
-  Journal journal{"Dear Diary"};
-  journal.add("I ate a bug");
-  journal.add("I cried today");
+/* Collection Manager helps to manage the poem files*/
+struct CollectionManager {
+  static void save(const Poem &poem, string filename) {
+    replace(filename.begin(), filename.end(), ' ', '_');
+    ofstream ofs{filename};
+    for (string entry : poem.entries) {
+      ofs << entry << endl;
+    }
+  }
+};
 
-  journal.save("test.txt");
+/* Main program*/
+int main() {
+  string title = "Today is a good day";
+  Poem poem{title};
+  poem.add("The weather is good,");
+  poem.add("The people is nice,");
+  poem.add("But the wallet is void.");
+  // poem.save("test.txt"); // Poem struct should not manage saving tasks
+
+  CollectionManager cm;
+  cm.save(poem, title + ".txt");
   return 0;
 }
