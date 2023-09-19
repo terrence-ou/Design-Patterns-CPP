@@ -11,7 +11,7 @@
     Code: [02_open_close.cpp](https://github.com/terrence-ou/Design-Patterns-CPP/blob/main/SOLID/02_open_close.cpp)
 
 - **Liskov substitution principle**: <br>
-    "An object (such as a class) may be replaced by a sub-object (such as a class that extends the first class) without breaking the program." LSP helps in creating a system that is more maintainable and scalable, as developers can trust in the consistent behavior of objects, regardless of their specific types. [4]<br>
+    "An object (such as a class) may be replaced by a sub-object (such as a class that extends the first class) without breaking the program." LSP helps in creating a system that is more maintainable and scalable, as developers can trust in the consistent behavior of objects, regardless of their specific types [4].<br>
     Code: [03_liskov_substitution.cpp](https://github.com/terrence-ou/Design-Patterns-CPP/blob/main/SOLID/03_liskov_substitution.cpp)
 
 
